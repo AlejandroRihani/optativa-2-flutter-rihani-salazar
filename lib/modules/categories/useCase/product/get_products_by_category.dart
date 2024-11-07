@@ -1,5 +1,5 @@
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/product_dto.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/repository/product/product_repository.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/product/product_repository.dart';
 
 class GetProductsByCategoryUseCase {
   final ProductRepository _productRepository;

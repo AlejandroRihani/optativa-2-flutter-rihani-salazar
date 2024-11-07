@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/category/category_dto.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/repository/category/category_repository.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/useCase/category/get_categories.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/category/category_dto.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/category/category_repository.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/useCase/category/get_categories.dart';
 import 'package:proyecto_alejandro_rihani/screens/products_by_cat_page.dart';
 
 class CategoriesPage extends StatefulWidget {

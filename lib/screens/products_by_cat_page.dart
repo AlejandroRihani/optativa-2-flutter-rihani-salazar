@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/product_dto.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/repository/product/product_repository.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/useCase/product/get_products_by_category.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/product/product_repository.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/useCase/product/get_products_by_category.dart';
 import 'package:proyecto_alejandro_rihani/widgets/product.dart';
 
 class ProductsByCategoryPage extends StatefulWidget {

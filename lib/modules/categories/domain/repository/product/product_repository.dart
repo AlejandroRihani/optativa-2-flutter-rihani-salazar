@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:proyecto_alejandro_rihani/infrastructure/connection/connection.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/product_dto.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
 
 class ProductRepository {
   final Connection _connection = Connection();

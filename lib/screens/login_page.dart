@@ -17,7 +17,7 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.network(
-              'https://example.com/image.png', 
+              'https://ps.w.org/login-customizer/assets/icon-256x256.png?rev=2455454', 
               height: 200,
             ),
             const SizedBox(height: 20),
@@ -40,7 +40,7 @@ class LoginPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CategoriesPage()),
+                  MaterialPageRoute(builder: (context) => const CategoriesPage()),
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
