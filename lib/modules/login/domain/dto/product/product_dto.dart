@@ -1,6 +1,6 @@
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/dimensions.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/meta.dart';
-import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/review.dart';
+import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/dimensions.dart';
+import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/meta.dart';
+import 'package:proyecto_alejandro_rihani/modules/login/domain/dto/product/review.dart';
 
 class ProductDTO {
   final int id;
