@@ -6,17 +6,9 @@ class Connection implements Iconnection {
   final String baseUrl = 'https://dummyjson.com';
 
   @override
-  Future<T> get<T>(String endpoint, {Map<String, String>? headers}) async {
+  Future<http.Response> get<T>(String endpoint, {Map<String, String>? headers}) async {
     final url = Uri.parse('$baseUrl/$endpoint');
-    final response = await http.get(url, headers: headers);
-
-    if (response.statusCode == 200) {
-      print('Respuesta de API recibida: ${response.body}');
-      return jsonDecode(response.body) as T;
-    } else {
-      print('Error en la solicitud GET: ${response.statusCode}');
-      throw Exception('Error en la solicitud GET: ${response.statusCode}');
-    }
+    return await http.get(url, headers: headers);
   }
 
   @override
