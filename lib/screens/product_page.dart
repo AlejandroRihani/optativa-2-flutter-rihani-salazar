@@ -1,10 +1,68 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends StatefulWidget {
   final Product product;
 
   const ProductDetailPage({super.key, required this.product});
+
+  @override
+  _ProductDetailPageState createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  int quantity = 1;
+
+  Future<void> addToCart(Product product, int quantityToAdd) async {
+  final prefs = await SharedPreferences.getInstance();
+  final String? cartData = prefs.getString('cart');
+  List<Map<String, dynamic>> cart = [];
+
+  if (cartData != null) {
+    cart = List<Map<String, dynamic>>.from(jsonDecode(cartData));
+  }
+
+  final existingProductIndex = cart.indexWhere((item) => item['id'] == product.id);
+
+  if (existingProductIndex >= 0) {
+    int currentQuantity = cart[existingProductIndex]['quantity'];
+    int newQuantity = currentQuantity + quantityToAdd;
+
+    if (newQuantity > product.stock) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No puedes agregar más de ${product.stock} unidades.')),
+      );
+    } else {
+      cart[existingProductIndex]['quantity'] = newQuantity;
+      cart[existingProductIndex]['total'] = newQuantity * product.price;
+      await prefs.setString('cart', jsonEncode(cart));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${product.name} actualizado en el carrito con cantidad $newQuantity')),
+      );
+    }
+  } else {
+    if (quantityToAdd > product.stock) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No puedes agregar más de ${product.stock} unidades.')),
+      );
+    } else {
+      cart.add({
+        'id': product.id,
+        'name': product.name,
+        'price': product.price,
+        'quantity': quantityToAdd,
+        'total': product.price * quantityToAdd,
+        'date': DateTime.now().toString(),
+      });
+      await prefs.setString('cart', jsonEncode(cart));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${product.name} agregado al carrito.')),
+      );
+    }
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +77,13 @@ class ProductDetailPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.network(
-              product.image,
+              widget.product.image,
               height: 200,
               fit: BoxFit.cover,
             ),
             const SizedBox(height: 16),
             Text(
-              product.name,
+              widget.product.name,
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -34,7 +92,7 @@ class ProductDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              product.description,
+              widget.product.description,
               style: const TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
@@ -43,19 +101,35 @@ class ProductDetailPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Precio: \$${product.price.toStringAsFixed(2)}",
+                  "Precio: \$${widget.product.price.toStringAsFixed(2)}",
                   style: const TextStyle(fontSize: 16),
                 ),
                 Text(
-                  "Stock: ${product.stock}",
+                  "Stock: ${widget.product.stock}",
                   style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
+            const SizedBox(height: 16),
+            TextField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: "Cantidad"),
+              onChanged: (value) {
+                setState(() {
+                  quantity = int.tryParse(value) ?? 1; 
+                });
+              },
+            ),
             const SizedBox(height: 24),
             ElevatedButton.icon(
               onPressed: () {
-                print("Producto agregado al carrito: ${product.name}");
+                if (quantity > 0 && quantity <= widget.product.stock) {
+                  addToCart(widget.product, quantity);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Cantidad no válida o mayor al stock disponible')),
+                  );
+                }
               },
               icon: const Icon(Icons.add),
               label: const Text("Agregar"),

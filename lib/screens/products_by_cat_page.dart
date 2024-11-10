@@ -3,6 +3,7 @@ import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/product/product_repository.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/useCase/product/get_products_by_category.dart';
 import 'package:proyecto_alejandro_rihani/widgets/product.dart';
+import 'package:proyecto_alejandro_rihani/routes/routes.dart';
 
 class ProductsByCategoryPage extends StatefulWidget {
   final String categorySlug;
@@ -51,6 +52,14 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
       appBar: AppBar(
         title: Text(widget.categoryName),
         backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart), 
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.cart);
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())

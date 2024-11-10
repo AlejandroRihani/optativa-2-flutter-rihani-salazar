@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/category/category_dto.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/category/category_repository.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/useCase/category/get_categories.dart';
-import 'package:proyecto_alejandro_rihani/screens/products_by_cat_page.dart';
+import 'package:proyecto_alejandro_rihani/routes/routes.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _CategoriesPageState createState() => _CategoriesPageState();
 }
 
@@ -25,22 +24,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   Future<void> loadCategories() async {
-  try {
-    print('Iniciando carga de categorías...');
-    List<Category> fetchedCategories = await _getCategoriesUseCase.execute(null);
-    setState(() {
-      categories = fetchedCategories;
-      isLoading = false;
-    });
-    print('Categorías cargadas: $categories');
-  } catch (e) {
-    setState(() {
-      isLoading = false;
-    });
-    print('Error al cargar categorías: $e');
+    try {
+      List<Category> fetchedCategories = await _getCategoriesUseCase.execute(null);
+      setState(() {
+        categories = fetchedCategories;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print('Error al cargar categorías: $e');
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +44,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
       appBar: AppBar(
         title: const Text("Categorías"),
         backgroundColor: Colors.blue,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart), 
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.cart);
+            },
+          ),
+        ],
       ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -61,14 +65,10 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   subtitle: Text(category.url),
                   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => ProductsByCategoryPage(
-                          categorySlug: category.slug,
-                          categoryName: category.name,
-                        ),
-                      ),
+                      AppRoutes.productsByCategory,
+                      arguments: category.slug, 
                     );
                   },
                 );

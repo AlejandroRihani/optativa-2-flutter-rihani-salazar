@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_alejandro_rihani/screens/login_page.dart';
-
+import 'package:proyecto_alejandro_rihani/routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      initialRoute: AppRoutes.login, 
+      routes: AppRoutes.routes, 
     );
   }
 }
