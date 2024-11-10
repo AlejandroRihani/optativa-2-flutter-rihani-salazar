@@ -57,7 +57,14 @@ class _CartPageState extends State<CartPage> {
               itemBuilder: (context, index) {
                 final item = cart[index];
                 return ListTile(
-                  leading: const Icon(Icons.shopping_cart, color: Colors.blue),
+                  leading: item['image'] != null
+                      ? Image.network(
+                          item['image'],
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(Icons.shopping_cart, color: Colors.blue), // Icono genérico si no hay imagen
                   title: Text(item['name']),
                   subtitle: Text(
                       "Cantidad: ${item['quantity']} - Total: \$${item['total'].toStringAsFixed(2)}"),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/category/category_dto.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/repository/category/category_repository.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/useCase/category/get_categories.dart';
-import 'package:proyecto_alejandro_rihani/routes/routes.dart';
+import 'package:proyecto_alejandro_rihani/screens/products_by_cat_page.dart';
 
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage({super.key});
@@ -48,7 +48,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
           IconButton(
             icon: const Icon(Icons.shopping_cart), 
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.cart);
+              Navigator.pushNamed(context, '/cart');
             },
           ),
         ],
@@ -60,15 +60,26 @@ class _CategoriesPageState extends State<CategoriesPage> {
               itemBuilder: (context, index) {
                 final category = categories[index];
                 return ListTile(
-                  leading: const Icon(Icons.category, color: Colors.blue),
+                  leading: category.firstProductImage != null
+                      ? Image.network(
+                          category.firstProductImage!,
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                        )
+                      : const Icon(Icons.category, color: Colors.blue),
                   title: Text(category.name),
-                  subtitle: Text(category.url),
+                  //subtitle: Text(category.url),
                   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                   onTap: () {
-                    Navigator.pushNamed(
+                    Navigator.push(
                       context,
-                      AppRoutes.productsByCategory,
-                      arguments: category.slug, 
+                      MaterialPageRoute(
+                        builder: (context) => ProductsByCategoryPage(
+                          categorySlug: category.slug,
+                          categoryName: category.name,
+                        ),
+                      ),
                     );
                   },
                 );
