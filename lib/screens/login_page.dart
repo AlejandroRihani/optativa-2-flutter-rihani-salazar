@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;  
-import 'dart:convert';  
-import 'package:shared_preferences/shared_preferences.dart';  
+import 'package:http/http.dart' as http;  // Importación para la librería http
+import 'dart:convert';  // Importación para manejar JSON
+import 'package:shared_preferences/shared_preferences.dart';  // Importación de shared_preferences
 import 'category_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
         title: const Text("Login"),
         backgroundColor: Colors.blue,
       ),
-      body: Padding(
+      body: SingleChildScrollView( 
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -73,23 +73,14 @@ class _LoginPageState extends State<LoginPage> {
                 );
                 if (response.statusCode == 200) {
                   final json = jsonDecode(response.body);
-                  print('Respuesta del servidor: $json');
-                  final accessToken = json['accessToken'];
-                  if (accessToken != null) {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setString('token', accessToken);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const CategoriesPage()),
-                    );
-                  } else {
-                    print('Error: El token no se encontró en la respuesta del servidor.');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Error en la autenticación: token no encontrado')),
-                    );
-                  }
+                  final token = json['accessToken'];
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.setString('token', token);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CategoriesPage()),
+                  );
                 } else {
-                  print('Error en la autenticación. Código de estado: ${response.statusCode}');
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Error en la autenticación')),
                   );

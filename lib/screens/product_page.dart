@@ -19,17 +19,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   Future<void> addToCart(Product product, int quantityToAdd) async {
     final prefs = await SharedPreferences.getInstance();
     final String? cartData = prefs.getString('cart');
-    List<Map<String, dynamic>> cart = [];
 
+    List<Map<String, dynamic>> cart = [];
     if (cartData != null) {
       cart = List<Map<String, dynamic>>.from(jsonDecode(cartData));
     }
-
     final existingProductIndex = cart.indexWhere((item) => item['id'] == product.id);
     if (existingProductIndex >= 0) {
       int currentQuantity = cart[existingProductIndex]['quantity'];
       int newQuantity = currentQuantity + quantityToAdd;
-
       if (newQuantity > product.stock) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('No puedes agregar más de ${product.stock} unidades.')),
@@ -43,7 +41,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         );
       }
     } else {
-      if (quantityToAdd > product.stock) {
+      if (cart.length >= 7) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No puedes agregar más de 7 productos diferentes al carrito.')),
+        );
+      } else if (quantityToAdd > product.stock) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('No puedes agregar más de ${product.stock} unidades.')),
         );
@@ -55,7 +57,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           'quantity': quantityToAdd,
           'total': product.price * quantityToAdd,
           'date': DateTime.now().toString(),
-          'image': product.image, // Agregar la imagen del producto
+          'image': product.image, 
         });
         await prefs.setString('cart', jsonEncode(cart));
         ScaffoldMessenger.of(context).showSnackBar(
@@ -64,6 +66,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
