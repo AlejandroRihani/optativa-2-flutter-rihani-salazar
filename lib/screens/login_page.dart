@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;  // Importación para la librería http
-import 'dart:convert';  // Importación para manejar JSON
-import 'package:shared_preferences/shared_preferences.dart';  // Importación de shared_preferences
+import 'package:http/http.dart' as http;  
+import 'dart:convert';  
+import 'package:shared_preferences/shared_preferences.dart';  
 import 'category_page.dart';
 
 class LoginPage extends StatefulWidget {
