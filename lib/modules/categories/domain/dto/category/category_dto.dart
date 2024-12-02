@@ -2,8 +2,7 @@ class Category {
   final String slug;
   final String name;
   final String url;
-  String? firstProductImage; // Imagen del primer producto
-
+  String? firstProductImage; 
   Category({
     required this.slug,
     required this.name,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
-import 'package:proyecto_alejandro_rihani/screens/product_page.dart';
+import 'package:proyecto_alejandro_rihani/screens/product_details_page.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;

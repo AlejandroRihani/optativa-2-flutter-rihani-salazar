@@ -13,27 +13,35 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   late final GetCategoriesUseCase _getCategoriesUseCase;
-  List<Category> categories = [];
+  static List<Category>? _cachedCategories; 
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _getCategoriesUseCase = GetCategoriesUseCase(CategoryRepository());
-    loadCategories();
+    if (_cachedCategories == null) {
+      loadCategories();
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> loadCategories() async {
     try {
       List<Category> fetchedCategories = await _getCategoriesUseCase.execute(null);
       setState(() {
-        categories = fetchedCategories;
+        _cachedCategories = fetchedCategories; 
         isLoading = false;
       });
     } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
       print('Error al cargar categorías: $e');
     }
   }
@@ -46,7 +54,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
         backgroundColor: Colors.blue,
         actions: [
           IconButton(
-            icon: const Icon(Icons.shopping_cart), 
+            icon: const Icon(Icons.shopping_cart),
             onPressed: () {
               Navigator.pushNamed(context, '/cart');
             },
@@ -56,9 +64,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
-              itemCount: categories.length,
+              itemCount: _cachedCategories!.length,
               itemBuilder: (context, index) {
-                final category = categories[index];
+                final category = _cachedCategories![index];
                 return ListTile(
                   leading: category.firstProductImage != null
                       ? Image.network(
@@ -69,7 +77,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         )
                       : const Icon(Icons.category, color: Colors.blue),
                   title: Text(category.name),
-                  //subtitle: Text(category.url),
                   trailing: const Icon(Icons.arrow_forward_ios, color: Colors.blue),
                   onTap: () {
                     Navigator.push(

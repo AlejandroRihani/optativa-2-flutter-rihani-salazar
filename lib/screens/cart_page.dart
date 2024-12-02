@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
                           height: 50,
                           fit: BoxFit.cover,
                         )
-                      : const Icon(Icons.shopping_cart, color: Colors.blue), // Icono genérico si no hay imagen
+                      : const Icon(Icons.shopping_cart, color: Colors.blue), 
                   title: Text(item['name']),
                   subtitle: Text(
                       "Cantidad: ${item['quantity']} - Total: \$${item['total'].toStringAsFixed(2)}"),

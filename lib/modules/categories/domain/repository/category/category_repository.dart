@@ -15,7 +15,6 @@ class CategoryRepository implements Repository<void, List<Category>> {
       List<dynamic> data = jsonDecode(response.body);
       List<Category> categories = data.map((item) => Category.fromJson(item)).toList();
 
-      // Obtener el primer producto de cada categoría
       for (Category category in categories) {
         final productResponse = await _connection.get('products/category/${category.slug}');
         if (productResponse.statusCode == 200) {
