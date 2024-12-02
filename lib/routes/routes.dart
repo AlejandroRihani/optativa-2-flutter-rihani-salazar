@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import '/screens/login_page.dart';
-import '/screens/category_page.dart';
-import '/screens/products_by_cat_page.dart';
-import '/screens/product_details_page.dart';
-import '/screens/cart_page.dart';
-import '/screens/search_page.dart';
-import '/screens/seen_products_page.dart';
-import '/screens/user_profile_page.dart'; 
-import '../modules/categories/domain/dto/product/product_dto.dart';
+import 'package:proyecto_alejandro_rihani/modules/categories/domain/dto/product/product_dto.dart';
+import 'package:proyecto_alejandro_rihani/screens/login_page.dart';
+import 'package:proyecto_alejandro_rihani/screens/category_page.dart';
+import 'package:proyecto_alejandro_rihani/screens/products_by_cat_page.dart';
+import 'package:proyecto_alejandro_rihani/screens/product_details_page.dart';
+import 'package:proyecto_alejandro_rihani/screens/cart_page.dart';
+
+import '../screens/search_page.dart';
+import '../screens/seen_products_page.dart';
+import '../screens/user_profile_page.dart';
 
 class AppRoutes {
   static const String login = '/login';
@@ -26,12 +27,15 @@ class AppRoutes {
       categorySlug: ModalRoute.of(context)!.settings.arguments as String,
       categoryName: ModalRoute.of(context)!.settings.arguments as String,
     ),
-    productDetail: (context) => ProductDetailPage(
-      product: ModalRoute.of(context)!.settings.arguments as Product,
-    ),
+    productDetail: (context) {
+      final productData = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      return ProductDetailPage(
+        product: Product.fromJson(productData), // Convertir Map a Product
+      );
+    },
     cart: (context) => const CartPage(),
     search: (context) => const SearchPage(),
     seen: (context) => const SeenProductsPage(),
-    profile: (context) => const UserProfilePage(), 
+    profile: (context) => const UserProfilePage(),
   };
 }

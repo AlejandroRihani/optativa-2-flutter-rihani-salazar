@@ -30,7 +30,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (response.statusCode == 200) {
       final productData = jsonDecode(response.body);
       setState(() {
-        reviews = productData['reviews'] ?? []; // Asignar reviews si están presentes
+        reviews = productData['reviews'] ?? []; 
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -196,7 +196,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            review['user'] ?? 'Usuario anónimo',
+                            review['reviewerName'] ?? 'Usuario anónimo',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
@@ -205,6 +205,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           const SizedBox(height: 8),
                           Text(
                             review['comment'] ?? 'Sin comentarios',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          Text(
+                            review['rating'] != null ? "${review['rating'].toString()}/5" : 'Sin rating',
                             style: const TextStyle(fontSize: 14),
                           ),
                         ],
